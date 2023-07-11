@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { addTodo } from "../redux/modules/todos";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 function Form() {
   const dispatch = useDispatch();
@@ -12,10 +14,10 @@ function Form() {
   const onTitleChange = (event) => setTitle(event.target.value);
   const onBodyChange = (event) => setBody(event.target.value);
 
-  const onAddBtn = (event) => {
+  const onAddBtn = async (event) => {
     event.preventDefault();
     if (title === "" || body === "") {
-      alert("빈칸 뒤진다 진짜.");
+      alert("빈칸을 채워주세요.");
       return;
     }
     const newTodo = {
@@ -24,9 +26,17 @@ function Form() {
       body,
       OK: false,
     };
-    dispatch(addTodo(newTodo));
-    setTitle("");
-    setBody("");
+
+    try {
+      // Firestore에 데이터 추가
+      await addDoc(collection(db, "todos"), newTodo);
+      // Redux 액션 디스패치
+      dispatch(addTodo(newTodo));
+      setTitle("");
+      setBody("");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   return (
@@ -73,7 +83,7 @@ const FormArea = styled.form`
 
 const Label = styled.label`
   margin-right: 5px;
-  color: white; /* 흰색으로 설정 */
+  color: white;
 `;
 
 const FormButton = styled.button`
@@ -90,5 +100,5 @@ const Input = styled.input`
   margin: 0 20px;
   border: none;
   border-radius: 100px;
-  color: #050000; /* 흰색으로 설정 */
+  color: #050000;
 `;
