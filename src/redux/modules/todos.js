@@ -3,6 +3,7 @@ const initialState = [];
 const ADD_TODO = "todos/ADD_TODO";
 const TOGGLE_STATUS_TODO = "todos/TOGGLE_STATUS_TODO";
 const DELETE_TODO = "todos/DELETE_TODO";
+const LOAD_TODOS = "todos/LOAD_TODOS"; // 추가된 부분
 
 export const addTodo = (payload) => {
   return {
@@ -25,6 +26,13 @@ export const deleteTodo = (payload) => {
   };
 };
 
+export const loadTodos = (payload) => {
+  return {
+    type: LOAD_TODOS,
+    payload,
+  };
+};
+
 const todos = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TODO:
@@ -40,6 +48,8 @@ const todos = (state = initialState, action) => {
       return state.filter((todo) => {
         return todo.id !== action.payload;
       });
+    case LOAD_TODOS: // 추가된 부분
+      return action.payload;
     default:
       return state;
   }
