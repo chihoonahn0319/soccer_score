@@ -17,7 +17,7 @@ function Form() {
   const onAddBtn = async (event) => {
     event.preventDefault();
     if (title === "" || body === "") {
-      alert("빈칸을 채워주세요.");
+      alert("빈칸 뒤진다.");
       return;
     }
     const newTodo = {
@@ -44,7 +44,7 @@ function Form() {
       <FormArea>
         <Label htmlFor="form-title">
           이름
-          <Input
+          <NameInput
             type="text"
             id="form-title"
             value={title}
@@ -52,6 +52,7 @@ function Form() {
           />
         </Label>
         <Label htmlFor="form-body">
+          <br />
           참가/골/어시
           <Input
             type="text"
@@ -69,7 +70,7 @@ function Form() {
 export default Form;
 
 const Section = styled.section`
-  height: 100px;
+  height: 120px;
   display: flex;
   align-items: center;
   padding: 20px 30px;
@@ -83,21 +84,35 @@ const FormArea = styled.form`
 
 const Label = styled.label`
   margin-right: 5px;
+
   color: white;
 `;
 
 const FormButton = styled.button`
   border: none;
-  float: right;
   background-color: #000000;
   color: white;
   border: 3px solid white;
+  margin-left: 10px; /* 추가 버튼과 입력란 사이에 여백을 추가 */
+`;
+
+const NameInput = styled.input`
+  width: 260px;
+  height: 40px;
+  margin: 0 20px;
+  margin-bottom: 10px;
+  margin-left: 80px;
+
+  border: none;
+  border-radius: 100px;
+  color: #050000;
 `;
 
 const Input = styled.input`
   width: 260px;
   height: 40px;
   margin: 0 20px;
+
   border: none;
   border-radius: 100px;
   color: #050000;
