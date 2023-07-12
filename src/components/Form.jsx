@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { addTodo } from "../redux/modules/todos";
 import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 
 function Form() {
@@ -21,17 +21,16 @@ function Form() {
       return;
     }
     const newTodo = {
-      id: uuidv4(),
       title,
       body,
-      OK: false,
+      isDone: false,
     };
 
     try {
       // Firestore에 데이터 추가
-      await addDoc(collection(db, "todos"), newTodo);
+      const { id } = await addDoc(collection(db, "todos"), newTodo);
       // Redux 액션 디스패치
-      dispatch(addTodo(newTodo));
+      dispatch(addTodo({ ...newTodo, id }));
       setTitle("");
       setBody("");
     } catch (error) {
@@ -53,7 +52,7 @@ function Form() {
         </Label>
         <Label htmlFor="form-body">
           <br />
-          참가/골/어시
+          참석/골/어시
           <Input
             type="text"
             id="form-body"

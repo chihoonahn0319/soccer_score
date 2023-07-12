@@ -9,7 +9,7 @@ import { db } from "../firebase";
 function DoingList() {
   const dispatch = useDispatch();
   const todos = useSelector((state) => state.todos);
-
+  console.log(todos);
   useEffect(() => {
     const fetchData = async () => {
       try {
